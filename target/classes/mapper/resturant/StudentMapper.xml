@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.resturant.mapper.StudentMapper">
+<!--    改第五行-->
+
+   <resultMap id="StudentResult" type="Student">
+       <result property="id" column="id"/>
+       <result property="name" column="name"/>
+       <result property="sex" column="sex"/>
+       <result property="sno" column="sno"/>
+   </resultMap>
+
+    <sql id="selectStudentVo">
+        select id,sno,name,sex from t_student
+    </sql>
+
+    <select id="queryAll" resultType="com.ruoyi.resturant.domain.Student">
+
+        select id,sno,name,sex from t_student
+    </select>
+
+    <select id="selectStudentList" parameterType="Student" resultMap="StudentResult" >
+        select id,sno,name,sex from t_student
+        where name like concat('%',#{name},'%')
+    </select>
+
+    <select id="selectStudentById" parameterType="Long" resultType="com.ruoyi.resturant.domain.Student">
+        <include refid="selectStudentVo"></include>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStudent" parameterType="Student" useGeneratedKeys="true"
+    keyProperty="id">
+        insert into t_student(sno,name,sex)
+        values (#{sno},#{name},#{sex})
+    </insert>
+
+    <update id="updateStudent" parameterType="Student">
+        update t_student set name =#{name},sex =#{sex}
+        where id= #{id}
+    </update>
+
+    <delete id="deleteStudentById" parameterType="long">
+        delete from t_student where id =#{id}
+    </delete>
+</mapper>
